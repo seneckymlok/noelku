@@ -1,0 +1,10 @@
+node_modules
+.next
+.env.local
+.env*.local
+.DS_Store
+next-env.d.ts
+
+# original asset (served via /public copy)
+/♱ NOELIIIZI STASH KIT ♱.zip
+/coverart.jpg

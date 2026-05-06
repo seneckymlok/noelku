@@ -1,0 +1,211 @@
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap");
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --orange: #e8581c;
+  --orange-bright: #ff6a1f;
+  --bone: #f4ecd8;
+  --ink: #0c0d08;
+}
+
+html, body {
+  height: 100%;
+  background: var(--ink);
+  color: var(--bone);
+  font-family: "Inter", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a { color: inherit; }
+
+.page {
+  position: relative;
+  min-height: 100svh;
+  width: 100%;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.bg {
+  position: fixed;
+  inset: 0;
+  background: url("/coverart.jpg") center/cover no-repeat;
+  z-index: -2;
+}
+
+.bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(12, 13, 8, 0.15) 0%,
+    rgba(12, 13, 8, 0.35) 55%,
+    rgba(12, 13, 8, 0.85) 100%
+  );
+}
+
+.frame {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: clamp(24px, 4vw, 56px);
+  gap: clamp(28px, 4vw, 44px);
+}
+
+.hero {
+  max-width: 720px;
+  width: 100%;
+}
+
+.kicker {
+  font-family: "Bebas Neue", sans-serif;
+  letter-spacing: 0.32em;
+  font-size: clamp(11px, 1.1vw, 13px);
+  color: var(--bone);
+  margin-bottom: 18px;
+  opacity: 0.9;
+}
+
+.title {
+  font-family: "Anton", sans-serif;
+  font-weight: 400;
+  font-size: clamp(56px, 9vw, 132px);
+  line-height: 0.88;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--bone);
+  margin-bottom: 32px;
+}
+
+.title .accent {
+  color: var(--orange-bright);
+}
+
+.subtitle {
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: clamp(14px, 1.3vw, 16px);
+  letter-spacing: 0.04em;
+  color: var(--bone);
+  opacity: 0.85;
+  margin-bottom: 28px;
+  max-width: 480px;
+  line-height: 1.5;
+}
+
+.form {
+  display: flex;
+  gap: 8px;
+  max-width: 520px;
+}
+
+.input {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(244, 236, 216, 0.35);
+  padding: 16px 18px;
+  color: var(--bone);
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+  min-width: 0;
+  backdrop-filter: blur(8px);
+  border-radius: 2px;
+}
+.input::placeholder { color: rgba(244, 236, 216, 0.5); }
+.input:focus { border-color: var(--orange-bright); background: rgba(0, 0, 0, 0.5); }
+
+.submit {
+  background: var(--orange);
+  color: var(--ink);
+  border: 1px solid var(--orange);
+  padding: 0 26px;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+  border-radius: 2px;
+}
+.submit:hover:not(:disabled) { background: var(--orange-bright); }
+.submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.consent {
+  margin-top: 14px;
+  font-size: 12px;
+  color: rgba(244, 236, 216, 0.55);
+  max-width: 520px;
+}
+
+.message {
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--bone);
+  max-width: 520px;
+}
+.message.error { color: #ff8a8a; }
+
+.success-block {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 520px;
+}
+
+.download-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: var(--orange);
+  color: var(--ink);
+  text-decoration: none;
+  padding: 18px 24px;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid var(--orange);
+  border-radius: 2px;
+  transition: background 0.15s;
+  align-self: flex-start;
+}
+.download-btn:hover { background: var(--orange-bright); }
+
+.footer {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+
+.social-link {
+  color: var(--bone);
+  text-decoration: none;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.85;
+  transition: opacity 0.15s, color 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.social-link:hover { opacity: 1; color: var(--orange-bright); }
+
+@media (max-width: 640px) {
+  .form { flex-direction: column; gap: 10px; }
+  .submit { padding: 16px; }
+  .footer { gap: 20px; }
+}

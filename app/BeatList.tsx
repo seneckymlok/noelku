@@ -116,12 +116,42 @@ export default function BeatList() {
     });
   }
 
-  function seek(idx: number, e: React.MouseEvent<HTMLDivElement>) {
+  function seekFromPointer(idx: number, clientX: number, rect: DOMRect) {
     const a = audioRefs.current[idx];
     if (!a || !a.duration) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const pct = (e.clientX - rect.left) / rect.width;
-    a.currentTime = Math.max(0, Math.min(1, pct)) * a.duration;
+    const pct = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+    a.currentTime = pct * a.duration;
+    setProgress((p) => {
+      const next = [...p];
+      next[idx] = pct * 100;
+      return next;
+    });
+    setCurrent((c) => {
+      const next = [...c];
+      next[idx] = pct * a.duration;
+      return next;
+    });
+  }
+
+  function onProgressPointerDown(idx: number, e: React.PointerEvent<HTMLDivElement>) {
+    e.preventDefault();
+    const el = e.currentTarget;
+    const rect = el.getBoundingClientRect();
+    el.setPointerCapture(e.pointerId);
+    seekFromPointer(idx, e.clientX, rect);
+
+    const move = (ev: PointerEvent) => {
+      seekFromPointer(idx, ev.clientX, rect);
+    };
+    const up = (ev: PointerEvent) => {
+      el.removeEventListener("pointermove", move);
+      el.removeEventListener("pointerup", up);
+      el.removeEventListener("pointercancel", up);
+      try { el.releasePointerCapture(ev.pointerId); } catch {}
+    };
+    el.addEventListener("pointermove", move);
+    el.addEventListener("pointerup", up);
+    el.addEventListener("pointercancel", up);
   }
 
   return (
@@ -175,7 +205,7 @@ export default function BeatList() {
                 )}
                 <div
                   className="progress"
-                  onClick={(e) => seek(idx, e)}
+                  onPointerDown={(e) => onProgressPointerDown(idx, e)}
                   role="slider"
                   aria-label="Seek"
                   aria-valuenow={Math.round(progress[idx])}

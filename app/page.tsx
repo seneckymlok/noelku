@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, FormEvent } from "react";
+import BeatList from "./BeatList";
 
 const ZIP_PATH = "/noeliiizi-stash-kit.zip";
 
@@ -47,45 +48,51 @@ export default function Page() {
       <div className="bg" />
 
       <div className="frame">
-        <section className="hero">
-          <div className="kicker">Noeliiizi · Drop 01</div>
-          <h1 className="title">
-            Free <span className="accent">Stash</span><br />Kit 01
-          </h1>
+        <div className="grid">
+          <section className="hero">
+            <div className="kicker">Noeliiizi · Drop 01</div>
+            <h1 className="title">
+              Free <span className="accent">Stash</span><br />Kit 01
+            </h1>
 
-          {status === "success" ? (
-            <div className="success-block">
-              <div className="message">{message}</div>
-              <a className="download-btn" href={ZIP_PATH} download="noeliiizi-stash-kit.zip">
-                ↓ Download Kit
-              </a>
-            </div>
-          ) : (
-            <>
-              <form className="form" onSubmit={onSubmit}>
-                <input
-                  className="input"
-                  type="email"
-                  placeholder="your@email.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  autoComplete="email"
-                  disabled={status === "loading"}
-                />
-                <button className="submit" type="submit" disabled={status === "loading"}>
-                  {status === "loading" ? "Sending…" : "Get Kit"}
-                </button>
-              </form>
-              {message && status === "error" && (
-                <div className="message error">{message}</div>
-              )}
-              <div className="consent">
-                By submitting you agree to receive occasional drops & updates. Unsubscribe any time.
+            {status === "success" ? (
+              <div className="success-block">
+                <div className="message">{message}</div>
+                <a className="download-btn" href={ZIP_PATH} download="noeliiizi-stash-kit.zip">
+                  ↓ Download Kit
+                </a>
               </div>
-            </>
-          )}
-        </section>
+            ) : (
+              <>
+                <form className="form" onSubmit={onSubmit}>
+                  <input
+                    className="input"
+                    type="email"
+                    placeholder="your@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    autoComplete="email"
+                    disabled={status === "loading"}
+                  />
+                  <button className="submit" type="submit" disabled={status === "loading"}>
+                    {status === "loading" ? "Sending…" : "Get Kit"}
+                  </button>
+                </form>
+                {message && status === "error" && (
+                  <div className="message error">{message}</div>
+                )}
+                <div className="consent">
+                  By submitting you agree to receive occasional drops & updates. Unsubscribe any time.
+                </div>
+              </>
+            )}
+          </section>
+
+          <aside className="aside">
+            <BeatList />
+          </aside>
+        </div>
 
         <footer className="footer">
           <a className="social-link" href="https://www.instagram.com/noeliiizi/" target="_blank" rel="noopener noreferrer">

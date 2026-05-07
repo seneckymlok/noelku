@@ -97,6 +97,9 @@ button { font-family: inherit; }
 .kicker {
   font-family: "Bebas Neue", sans-serif;
   letter-spacing: 0.32em;
+  /* compensate for letter-spacing — the first glyph sits flush left while
+     the rest get trailing spacing, so the optical left edge needs a nudge */
+  text-indent: 0.16em;
   font-size: clamp(11px, 1.1vw, 13px);
   color: var(--bone);
   margin-bottom: 18px;

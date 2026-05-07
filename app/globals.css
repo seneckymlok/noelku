@@ -283,11 +283,10 @@ button { font-family: inherit; }
 /* EQ bars (active state) */
 
 .eq {
-  display: flex;
+  display: inline-flex;
   align-items: flex-end;
   gap: 2px;
   height: 12px;
-  width: 14px;
   transition: opacity 0.15s var(--ease);
 }
 .eq span {

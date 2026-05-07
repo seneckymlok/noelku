@@ -15,7 +15,7 @@ type Beat = {
 const BEATS: Beat[] = [
   { src: "/beats/loveemotions.mp3", key: "loveemotions", title: "loveemotions", bpm: 144 },
   { src: "/beats/remote.mp3", key: "remote", title: "remote", bpm: 147, collabs: ["@jonas8000808000"] },
-  { src: "/beats/slovakian-trap-house.mp3", key: "slovakian-trap-house", title: "slovakian trap house", bpm: 140, scale: "D min", collabs: ["@______jo__a", "@noeliiizi"] },
+  { src: "/beats/slovakian-trap-house.mp3", key: "slovakian-trap-house", title: "slovakian trap house", bpm: 140, collabs: ["@______jo__a", "@noeliiizi"] },
   { src: "/beats/swistem.mp3", key: "swistem", title: "swistem", bpm: 128 },
 ];
 

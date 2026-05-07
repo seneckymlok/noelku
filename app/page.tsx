@@ -50,13 +50,13 @@ export default function Page() {
       <div className="frame">
         <div className="grid">
           <section className="hero">
-            <div className="kicker">Noeliiizi · Drop 01</div>
-            <h1 className="title">
+            <div className="kicker fade" style={{ animationDelay: "0ms" }}>Noeliiizi · Drop 01</div>
+            <h1 className="title fade" style={{ animationDelay: "100ms" }}>
               Free <span className="accent">Stash</span><br />Kit 01
             </h1>
 
             {status === "success" ? (
-              <div className="success-block">
+              <div className="success-block fade" style={{ animationDelay: "220ms" }}>
                 <div className="message">{message}</div>
                 <a className="download-btn" href={ZIP_PATH} download="noeliiizi-stash-kit.zip">
                   ↓ Download Kit
@@ -64,7 +64,7 @@ export default function Page() {
               </div>
             ) : (
               <>
-                <form className="form" onSubmit={onSubmit}>
+                <form className="form fade" style={{ animationDelay: "220ms" }} onSubmit={onSubmit}>
                   <input
                     className="input"
                     type="email"
@@ -82,7 +82,7 @@ export default function Page() {
                 {message && status === "error" && (
                   <div className="message error">{message}</div>
                 )}
-                <div className="consent">
+                <div className="consent fade" style={{ animationDelay: "320ms" }}>
                   By submitting you agree to receive occasional drops & updates. Unsubscribe any time.
                 </div>
               </>
@@ -94,7 +94,7 @@ export default function Page() {
           </aside>
         </div>
 
-        <footer className="footer">
+        <footer className="footer fade" style={{ animationDelay: "880ms" }}>
           <a className="social-link" href="https://www.instagram.com/noeliiizi/" target="_blank" rel="noopener noreferrer">
             Instagram ↗
           </a>

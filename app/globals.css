@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap");
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -8,9 +8,11 @@
   --bone: #f4ecd8;
   --bone-dim: rgba(244, 236, 216, 0.6);
   --bone-faint: rgba(244, 236, 216, 0.3);
+  --bone-ghost: rgba(244, 236, 216, 0.18);
   --ink: #0c0d08;
   --panel: rgba(12, 13, 8, 0.55);
   --border: rgba(244, 236, 216, 0.14);
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 html, body {
@@ -49,12 +51,32 @@ button { font-family: inherit; }
     linear-gradient(90deg, rgba(12,13,8,0.35) 0%, rgba(12,13,8,0.05) 50%, rgba(12,13,8,0.35) 100%);
 }
 
+/* ---------- Fade-in cascade ---------- */
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade {
+  opacity: 0;
+  animation: rise 0.85s var(--ease) forwards;
+  will-change: opacity, transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade { animation: none; opacity: 1; transform: none; }
+}
+
+/* ---------- Layout ---------- */
+
 .frame {
   position: relative;
   min-height: 100svh;
   display: flex;
   flex-direction: column;
   padding: clamp(20px, 3.5vw, 48px);
+  padding-bottom: max(clamp(20px, 3.5vw, 48px), env(safe-area-inset-bottom));
   gap: clamp(24px, 3.5vw, 40px);
 }
 
@@ -80,6 +102,8 @@ button { font-family: inherit; }
   margin-bottom: 18px;
   opacity: 0.9;
 }
+.kicker.fade { opacity: 0; }
+.kicker.fade { animation-name: rise; }
 
 .title {
   font-family: "Anton", sans-serif;
@@ -175,7 +199,7 @@ button { font-family: inherit; }
 }
 .download-btn:hover { background: var(--orange-bright); }
 
-/* ---------- Beats ---------- */
+/* ---------- Beats panel ---------- */
 
 .aside {
   display: flex;
@@ -209,9 +233,9 @@ button { font-family: inherit; }
 }
 
 .beats-count {
-  font-family: "Inter", monospace;
-  font-size: 11px;
-  letter-spacing: 0.15em;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
   color: var(--bone-dim);
 }
 
@@ -222,14 +246,19 @@ button { font-family: inherit; }
   grid-template-columns: 40px 1fr;
   gap: 14px;
   align-items: start;
-  padding: 14px 0;
+  padding: 16px 0;
   border-bottom: 1px solid var(--border);
   transition: background 0.2s;
 }
 .beat-row:last-child { border-bottom: none; }
 .beat-row.active .beat-title { color: var(--orange-bright); }
+.beat-row.active .track-no { color: var(--orange-bright); }
+.beat-row.active .track-sep { color: var(--orange-bright); opacity: 0.45; }
+
+/* Play button */
 
 .play-btn {
+  position: relative;
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -240,21 +269,63 @@ button { font-family: inherit; }
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.18s var(--ease);
   flex-shrink: 0;
   margin-top: 2px;
+  overflow: hidden;
 }
 .play-btn:hover { background: var(--bone); color: var(--ink); transform: scale(1.05); }
 .beat-row.active .play-btn { background: var(--orange); color: var(--ink); border-color: var(--orange); }
 .beat-row.active .play-btn:hover { background: var(--orange-bright); border-color: var(--orange-bright); }
-.play-btn svg { display: block; transform: translateX(0px); }
-.beat-row:not(.active) .play-btn svg path { transform: translateX(1px); }
+
+.play-btn svg path { transform: translateX(1px); }
+
+/* EQ bars (active state) */
+
+.eq {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 12px;
+  width: 14px;
+  transition: opacity 0.15s var(--ease);
+}
+.eq span {
+  display: block;
+  width: 2.5px;
+  height: 100%;
+  background: currentColor;
+  transform-origin: bottom;
+  animation: eq 0.9s ease-in-out infinite;
+}
+.eq span:nth-child(1) { animation-duration: 0.7s; animation-delay: -0.18s; }
+.eq span:nth-child(2) { animation-duration: 0.5s; animation-delay: -0.42s; }
+.eq span:nth-child(3) { animation-duration: 0.85s; animation-delay: -0.07s; }
+
+@keyframes eq {
+  0%   { transform: scaleY(0.25); }
+  50%  { transform: scaleY(1); }
+  100% { transform: scaleY(0.35); }
+}
+
+.pause-hover {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  opacity: 0;
+  transition: opacity 0.15s var(--ease);
+}
+.beat-row.active .play-btn:hover .eq { opacity: 0; }
+.beat-row.active .play-btn:hover .pause-hover { opacity: 1; }
+.pause-hover rect { transform: none; }
+
+/* Beat body */
 
 .beat-body {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .beat-meta-row {
@@ -262,6 +333,30 @@ button { font-family: inherit; }
   justify-content: space-between;
   align-items: baseline;
   gap: 12px;
+}
+
+.beat-title-line {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 9px;
+  min-width: 0;
+}
+
+.track-no {
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  color: var(--bone-dim);
+  font-variant-numeric: tabular-nums;
+  transition: color 0.2s var(--ease);
+}
+
+.track-sep {
+  color: var(--bone-faint);
+  font-size: 13px;
+  font-weight: 300;
+  transition: color 0.2s var(--ease);
 }
 
 .beat-title {
@@ -272,10 +367,12 @@ button { font-family: inherit; }
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  transition: color 0.2s var(--ease);
 }
 
 .beat-meta {
-  font-size: 11px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10.5px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--bone-dim);
@@ -291,52 +388,61 @@ button { font-family: inherit; }
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-top: -2px;
 }
 
-.progress {
+/* Waveform */
+
+.waveform {
   position: relative;
-  height: 14px;
-  padding: 5px 0;
+  width: 100%;
+  height: 36px;
   cursor: pointer;
-  margin-top: 2px;
   touch-action: none;
   user-select: none;
+  -webkit-user-select: none;
+  margin-top: 2px;
 }
-.progress::before {
-  content: "";
+
+.wf-svg {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  height: 3px;
-  transform: translateY(-50%);
-  background: rgba(244, 236, 216, 0.15);
-  border-radius: 2px;
-  transition: height 0.15s;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  display: block;
 }
-.progress:hover::before, .progress:active::before { height: 5px; }
-.progress-fill {
+
+.wf-svg.base { color: var(--bone-ghost); }
+.wf-svg.active { color: var(--bone); }
+.beat-row.active .wf-svg.active { color: var(--orange-bright); }
+
+.wf-svg rect { fill: currentColor; }
+
+.wf-clip {
   position: absolute;
-  left: 0;
-  top: 50%;
-  height: 3px;
-  transform: translateY(-50%);
-  background: var(--bone);
-  border-radius: 2px;
-  transition: height 0.15s;
+  inset: 0;
+  pointer-events: none;
+  transition: clip-path 0.08s linear;
 }
-.progress:hover .progress-fill, .progress:active .progress-fill { height: 5px; }
-.beat-row.active .progress-fill { background: var(--orange-bright); }
+
+.waveform:hover .wf-svg.base { color: rgba(244, 236, 216, 0.28); }
+
+/* Times row — desktop default visible */
 
 .beat-times {
   display: flex;
   justify-content: space-between;
+  font-family: "JetBrains Mono", monospace;
   font-size: 10px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   color: var(--bone-faint);
   font-variant-numeric: tabular-nums;
   margin-top: 2px;
+  transition: opacity 0.25s var(--ease), max-height 0.25s var(--ease);
 }
+
+.meta-duration { display: none; }
 
 /* ---------- Footer ---------- */
 
@@ -374,11 +480,29 @@ button { font-family: inherit; }
 }
 
 @media (max-width: 640px) {
-  .frame { padding: 22px 18px; }
+  .frame { padding: 22px 18px; padding-bottom: max(22px, env(safe-area-inset-bottom)); }
   .form { flex-direction: column; gap: 10px; }
   .submit { padding: 16px; }
   .footer { gap: 18px; flex-wrap: wrap; }
   .beats { padding: 16px; }
+  .beat-row { padding: 14px 0; }
   .beat-meta-row { flex-wrap: wrap; gap: 4px 10px; }
   .beat-title { white-space: normal; }
+  .waveform { height: 28px; }
+
+  /* Mobile: duration moves into the meta line; per-row time stamps only show when active. */
+  .meta-duration { display: inline; }
+  .beat-times {
+    opacity: 0;
+    max-height: 0;
+    margin: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .beat-row.active .beat-times {
+    opacity: 1;
+    max-height: 20px;
+    margin-top: 2px;
+    pointer-events: auto;
+  }
 }

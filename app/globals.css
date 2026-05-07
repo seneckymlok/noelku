@@ -483,9 +483,22 @@ button { font-family: inherit; }
 
 @media (max-width: 640px) {
   .frame { padding: 22px 18px; padding-bottom: max(22px, env(safe-area-inset-bottom)); }
-  .form { flex-direction: column; gap: 10px; }
+
+  /* Center hero + footer on mobile */
+  .hero { align-items: center; text-align: center; }
+  .kicker {
+    /* desktop uses text-indent to fix optical-left alignment with title.
+       on centered mobile we want true visual centering, so compensate the
+       trailing letter-spacing instead. */
+    text-indent: 0;
+    margin-right: -0.32em;
+  }
+  .consent { text-align: center; max-width: 100%; }
+  .form { width: 100%; flex-direction: column; gap: 10px; }
+  .success-block { align-items: center; width: 100%; }
+  .download-btn { align-self: center; }
   .submit { padding: 16px; }
-  .footer { gap: 18px; flex-wrap: wrap; }
+  .footer { gap: 18px; flex-wrap: wrap; justify-content: center; }
   .beats { padding: 16px; }
   .beat-row { padding: 14px 0; }
   .beat-meta-row { flex-wrap: wrap; gap: 4px 10px; }

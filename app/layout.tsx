@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "NOELIIIZI — FREE STASH KIT 01",
     description: "Free drumkit by noeliiizi.",
-    images: ["/coverart.jpg"],
+    images: ["/coverart.webp"],
   },
 };
 

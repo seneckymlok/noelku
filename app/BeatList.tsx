@@ -20,7 +20,7 @@ const BEATS: Beat[] = [
     src: "/beats/remote.mp3",
     title: "remote",
     bpm: 147,
-    collabs: ["ashphryg", "@jonas8000808000"],
+    collabs: ["@jonas8000808000"],
   },
   {
     src: "/beats/slovakian-trap-house.mp3",

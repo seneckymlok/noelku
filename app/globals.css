@@ -38,8 +38,14 @@ button { font-family: inherit; }
 .bg {
   position: fixed;
   inset: 0;
-  background: url("/coverart.webp") center/cover no-repeat;
+  background: url("/background.webp") center/cover no-repeat;
   z-index: -2;
+}
+
+@media (max-width: 640px) {
+  .bg {
+    background: url("/mobile_background.webp") center/cover no-repeat;
+  }
 }
 
 .bg::after {

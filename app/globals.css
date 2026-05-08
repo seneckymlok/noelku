@@ -408,6 +408,7 @@ button { font-family: inherit; }
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
   margin-top: 2px;
 }
 
@@ -433,7 +434,9 @@ button { font-family: inherit; }
   transition: clip-path 0.08s linear;
 }
 
-.waveform:hover .wf-svg.base { color: rgba(244, 236, 216, 0.28); }
+@media (hover: hover) {
+  .waveform:hover .wf-svg.base { color: rgba(244, 236, 216, 0.28); }
+}
 
 /* Times row — desktop default visible */
 

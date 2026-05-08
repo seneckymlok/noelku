@@ -5,7 +5,8 @@ node_modules
 .DS_Store
 next-env.d.ts
 
-# original assets (served via /public copies)
+# original assets (served via /public or /app copies)
 /♱ NOELIIIZI STASH KIT ♱.zip
 /coverart.jpg
+/favicon.jpg
 /BEATS/

@@ -5,16 +5,41 @@ import BeatList from "./BeatList";
 
 const ZIP_PATH = "/noeliiizi-stash-kit.zip";
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function validateEmail(val: string): string {
+  if (!val.trim()) return "Enter your email to get the kit.";
+  if (!EMAIL_RE.test(val)) return "That doesn't look like a valid email.";
+  return "";
+}
+
 export default function Page() {
   const [email, setEmail] = useState("");
+  const [fieldError, setFieldError] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [message, setMessage] = useState("");
+  const [apiError, setApiError] = useState("");
+
+  function onChange(val: string) {
+    setEmail(val);
+    // Re-validate live only after the user has already seen an error.
+    if (fieldError) setFieldError(validateEmail(val));
+  }
+
+  function onBlur() {
+    // Validate on blur only if something was typed — don't nag on empty untouched field.
+    if (email) setFieldError(validateEmail(email));
+  }
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
-    if (!email || status === "loading") return;
+    if (status === "loading") return;
+
+    const err = validateEmail(email);
+    if (err) { setFieldError(err); return; }
+    setFieldError("");
+    setApiError("");
     setStatus("loading");
-    setMessage("");
+
     try {
       const res = await fetch("/api/subscribe", {
         method: "POST",
@@ -24,11 +49,10 @@ export default function Page() {
       const data = await res.json();
       if (!res.ok) {
         setStatus("error");
-        setMessage(data.error || "Something went wrong. Try again.");
+        setApiError(data.error || "Something went wrong. Try again.");
         return;
       }
       setStatus("success");
-      setMessage("Locked in. Your stash is ready.");
       setTimeout(() => {
         const a = document.createElement("a");
         a.href = ZIP_PATH;
@@ -39,9 +63,12 @@ export default function Page() {
       }, 500);
     } catch {
       setStatus("error");
-      setMessage("Network error. Try again.");
+      setApiError("Network error. Try again.");
     }
   }
+
+  // The single error to display — field validation takes priority over API errors.
+  const activeError = fieldError || apiError;
 
   return (
     <main className="page">
@@ -57,35 +84,44 @@ export default function Page() {
 
             {status === "success" ? (
               <div className="success-block fade" style={{ animationDelay: "220ms" }}>
-                <div className="message">{message}</div>
+                <p className="success-msg">Locked in. Your stash is ready.</p>
                 <a className="download-btn" href={ZIP_PATH} download="noeliiizi-stash-kit.zip">
                   ↓ Download Kit
                 </a>
               </div>
             ) : (
-              <>
-                <form className="form fade" style={{ animationDelay: "220ms" }} onSubmit={onSubmit}>
+              <div className="form-wrap fade" style={{ animationDelay: "220ms" }}>
+                <form className="form" onSubmit={onSubmit} noValidate>
                   <input
-                    className="input"
+                    className={`input${activeError ? " input--error" : ""}`}
                     type="email"
                     placeholder="your@email.com"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
+                    onChange={(e) => onChange(e.target.value)}
+                    onBlur={onBlur}
                     autoComplete="email"
                     disabled={status === "loading"}
+                    aria-invalid={!!activeError}
+                    aria-describedby={activeError ? "form-error" : undefined}
                   />
                   <button className="submit" type="submit" disabled={status === "loading"}>
                     {status === "loading" ? "Sending…" : "Get Kit"}
                   </button>
                 </form>
-                {message && status === "error" && (
-                  <div className="message error">{message}</div>
-                )}
-                <div className="consent fade" style={{ animationDelay: "320ms" }}>
-                  By submitting you agree to receive occasional drops & updates. Unsubscribe any time.
+
+                <div className="form-feedback" aria-live="polite">
+                  {activeError && (
+                    <p className="field-error" id="form-error" key={activeError}>
+                      <span className="field-error__icon" aria-hidden="true">!</span>
+                      {activeError}
+                    </p>
+                  )}
                 </div>
-              </>
+
+                <p className="consent">
+                  By submitting you agree to receive occasional drops & updates. Unsubscribe any time.
+                </p>
+              </div>
             )}
           </section>
 

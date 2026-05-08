@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap");
+/* Fonts injected via next/font/google in layout.tsx — self-hosted, zero render-blocking. */
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -19,7 +19,7 @@ html, body {
   height: 100%;
   background: var(--ink);
   color: var(--bone);
-  font-family: "Inter", system-ui, sans-serif;
+  font-family: var(--font-inter), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -101,7 +101,7 @@ button { font-family: inherit; }
 }
 
 .kicker {
-  font-family: "Bebas Neue", sans-serif;
+  font-family: var(--font-bebas), sans-serif;
   letter-spacing: 0.32em;
   /* compensate for letter-spacing — the first glyph sits flush left while
      the rest get trailing spacing, so the optical left edge needs a nudge */
@@ -115,7 +115,7 @@ button { font-family: inherit; }
 .kicker.fade { animation-name: rise; }
 
 .title {
-  font-family: "Anton", sans-serif;
+  font-family: var(--font-anton), sans-serif;
   font-weight: 400;
   font-size: clamp(56px, 9vw, 132px);
   line-height: 0.88;
@@ -138,7 +138,7 @@ button { font-family: inherit; }
   border: 1px solid rgba(244, 236, 216, 0.35);
   padding: 16px 18px;
   color: var(--bone);
-  font-family: "Inter", sans-serif;
+  font-family: var(--font-inter), sans-serif;
   font-size: 15px;
   outline: none;
   transition: border-color 0.15s, background 0.15s;
@@ -280,14 +280,14 @@ button { font-family: inherit; }
 }
 
 .beats-title {
-  font-family: "Bebas Neue", sans-serif;
+  font-family: var(--font-bebas), sans-serif;
   font-size: 14px;
   letter-spacing: 0.32em;
   color: var(--bone);
 }
 
 .beats-count {
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono), monospace;
   font-size: 10.5px;
   letter-spacing: 0.2em;
   color: var(--bone-dim);
@@ -401,7 +401,7 @@ button { font-family: inherit; }
 }
 
 .track-no {
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono), monospace;
   font-weight: 600;
   font-size: 12px;
   letter-spacing: 0.05em;
@@ -429,7 +429,7 @@ button { font-family: inherit; }
 }
 
 .beat-meta {
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono), monospace;
   font-size: 10.5px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -494,7 +494,7 @@ button { font-family: inherit; }
 .beat-times {
   display: flex;
   justify-content: space-between;
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono), monospace;
   font-size: 10px;
   letter-spacing: 0.08em;
   color: var(--bone-faint);

@@ -277,9 +277,12 @@ button { font-family: inherit; }
   margin-top: 2px;
   overflow: hidden;
 }
-.play-btn:hover { background: var(--bone); color: var(--ink); transform: scale(1.05); }
 .beat-row.active .play-btn { background: var(--orange); color: var(--ink); border-color: var(--orange); }
-.beat-row.active .play-btn:hover { background: var(--orange-bright); border-color: var(--orange-bright); }
+
+@media (hover: hover) {
+  .play-btn:hover { background: var(--bone); color: var(--ink); transform: scale(1.05); }
+  .beat-row.active .play-btn:hover { background: var(--orange-bright); border-color: var(--orange-bright); }
+}
 
 .play-btn svg path { transform: translateX(1px); }
 
@@ -317,8 +320,10 @@ button { font-family: inherit; }
   opacity: 0;
   transition: opacity 0.15s var(--ease);
 }
-.beat-row.active .play-btn:hover .eq { opacity: 0; }
-.beat-row.active .play-btn:hover .pause-hover { opacity: 1; }
+@media (hover: hover) {
+  .beat-row.active .play-btn:hover .eq { opacity: 0; }
+  .beat-row.active .play-btn:hover .pause-hover { opacity: 1; }
+}
 .pause-hover rect { transform: none; }
 
 /* Beat body */
